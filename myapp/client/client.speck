@@ -1,0 +1,12 @@
+def get_db_data_for_user(user_id: int) -> int | None {
+  // Queries the application for data for a specific user
+  // Returns:
+  //   - The data (int) if user data found (and prints out data)
+  //   - Or None if user fails to authenticate, or data is not found
+
+  ../application/gateway::receive_data_query_request 
+}
+
+entrypoint {
+  get_db_data_for_user(user_id=1)
+}

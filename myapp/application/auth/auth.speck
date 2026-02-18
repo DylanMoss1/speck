@@ -1,0 +1,7 @@
+def authenticate_user(user_id: int) -> bool {
+  // Checks whether a user is authorized to access the application
+  // Returns:
+  //   - True if the user is authenticated
+  //   - False otherwise
+  // By default, user ids 1 -> 10 should be pre-filled
+}

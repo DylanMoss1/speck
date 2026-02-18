@@ -1,0 +1,10 @@
+def receive_data_query_request(user_id: int) -> int | None {
+  // Receives a data query request from the client
+  // Authenticates the user, then fetches their data if authenticated
+  // Returns:
+  //   - The data (int) if user is authenticated and data is found
+  //   - None if authentication fails or data is not found
+
+  ../auth::authenticate_user
+  ../db::get_user_data
+}

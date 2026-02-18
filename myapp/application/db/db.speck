@@ -1,0 +1,8 @@
+def get_user_data(user_id: int) -> int | None {
+  // Fetches user data from the database
+  // Returns:
+  //   - The data (int) if found
+  //   - None if no data exists for the given user_id
+  // Use a postgres database, with columns: user_id, value
+  // Pre-fill this database with values user_id=x, value=x for x in {0..100}
+}
