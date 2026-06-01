@@ -30,10 +30,10 @@ Workflow: `Plan Mode → Speck Diff → Collaborate / Review → Code Gen → Cl
 ## How does it work
 
 1. **Plan.** Sketch out your feature with 'Plan Mode' as normal, and accept the plan.
-2. **Speck.** Before implementing the plan, the workflow kicks with the new 'speck' development phase.
+2. **Speck.** Before implementing the plan, the new 'speck' workflow kicks in.
 3. **Diff.** The workflow generates 'before' and 'after' speck files, leveraging git* to produce diffs.
-4. **Review.** Review and refine the diff in your IDE alongside the LLM, until you sign off.
-5. **Generation.** The AI generates code which exactly mimics the provided specification.
+4. **Review.** Review and refine the speck diff in your IDE alongside the LLM, until you sign off.
+5. **Generation.** The AI generates code according to your specification.
 6. **Cleanup.** Once you have finished, the speck files are wiped leaving no trace of the workflow.
 
 *Or your VCS of choice.
@@ -48,15 +48,13 @@ mkdir -p ~/.claude/skills/speck
 cp speck/SKILL.md ~/.claude/skills/speck/SKILL.md
 ```
 
-It activates automatically when you finish planning a feature and asks once whether you'd like to use it (default yes).
-
-Leveraging the power of IDEs and version control, you can easily view and manipulate specification diffs to visualise the changes involved with your proposed feature.
+The skill activates automatically when you finish planning a feature, asking if you want to use the speck workflow.
 
 For the best experience:
 - Turn off linting on `*.speck` files, but keep the LSP configuration on.
 - Use your IDE's 'diff' view to compare 'before' and 'after' specks.
 - Use the [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) skill to refine your speck files.
-- Use the [superpowers](https://github.com/obra/superpowers) skill (or red-green-refactor TDD) for robust code implementation.
+- Use the [superpowers](https://github.com/obra/superpowers) skill (or red-green-refactor TDD) for robust code generation.
 
 ## Good to know
 
