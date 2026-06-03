@@ -1,6 +1,6 @@
 ---
 name: speck
-description: A specification workflow for AI-assisted development that inserts a design step between planning and code generation.
+description: Speck is a specification workflow for AI-assisted programming — inserting a new design step between 'Plan Mode' and 'Code Generation'.
 ---
 
 # Speck

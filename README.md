@@ -1,105 +1,154 @@
 # Speck — Specification-driven Development
 
-**Speck is a specification workflow for AI-assisted programming, inserting a new design step between 'Plan Mode' and 'Code Generation'.**
+**Speck is a specification workflow for AI-assisted programming — inserting a new design step between 'Plan Mode' and 'Code Generation'.**
 
 **Plan Mode** generates large blocks of text, which are hard to debug and reason about precisely.
 
 **Code Generation** is costly, we want to _fail fast_ rather than fix design flaws at this stage.
 
-Speck introduces a flexible, structured specification language between humans and AI — allowing you to visualise the final structure of the program before writing a single line of code.
+What we need is a stage in between: a flexible specification language which improves human-AI communication while keeping you in control of code generation.
 
 Benefits:
 - Faster, more precise communication with LLMs.
-- Fail fast: questions and design decision are front-loaded.
-- Hands-off implementation & greater confidence LLMs understand your design.
-- Visualise and guide the structure of the program — stay in control.
+- Fail fast: questions and design decisions are front-loaded.
+- Hands-off implementation, with confidence that LLMs understand your design.
+- Visualise and guide the final structure of the program.
 
-[VIDEO]
+Models are getting smarter, LLM-coding is getting better, but human-AI communication remains the same — speck aims to bridge this gap with a specification tool which can integrate into any existing workflow.
 
+## Speck files
 
+Each relevant program file gets a corresponding `.speck` file: `main.py → main.speck.py`.
 
+Speck files strip out all implementation details, leaving only the file's structure and behaviour (e.g. types, structures, constants, and docstrings).
 
+For example this Python file: 
 
+```python
+# payments.py — before feature
 
+STRIPE_KEY = os.environ["STRIPE_KEY"]
+MAX_RETRIES = 3
 
+def charge(order: Order) -> Receipt:
+    """Charge a customer for an order, retrying on transient failures."""
+    if existing := receipts.get(order.idempotency_key):
+        return existing
 
-This improves human-LLM communication, 
+    customer = load_customer(order.customer_id)
+    if customer.is_blocked:
+        raise PaymentFailed(order.id, reason="customer blocked")
 
+    last_error = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            receipt = stripe_charge(STRIPE_KEY, customer, order.total)
+            receipts.save(order.idempotency_key, receipt)
+            return receipt
+        except TransientError as err:
+            last_error = err
+            backoff(attempt)
 
+    raise PaymentFailed(order.id) from last_error
+```
 
+Has the corresponding speck file: 
 
+```python
+# payments.speck.py — before feature
 
+STRIPE_KEY: str
+MAX_RETRIES: int
 
-What does it solve:
-- **Avoid 
+def charge(order: Order) -> Receipt:
+    """Charge a customer for an order, retrying on transient failures.
 
+    PSEUDOCODE:
+    1) if this order was already charged, return its receipt
+    2) load the customer, and reject if they are blocked
+    3) charge the customer and save the receipt, retrying on failure
 
-Avoid planning features with large, natural-language blocks of text.
-- 
+    CONSTANTS:
+      - STRIPE_KEY: str
+      - MAX_RETRIES: int
 
+    CALLS:
+      - load_customer(customer_id) -> Customer
+      - stripe_charge(key: str, customer: Customer, amount: Money) -> Receipt
+    """
+    ...
+```
 
+**Feature Changes:** the real power is in the diff, comparing speck files before and after a change shows exactly how the program's structure and behaviour will shift.
 
+```diff
+  # payments.speck.py — after feature 
 
+  STRIPE_KEY: str
+  MAX_RETRIES: int
++ FRAUD_THRESHOLD: float
 
-For those who AI-programming because: 
-- 
+  def charge(order: Order) -> Receipt:
+      """Charge a customer for an order, retrying on transient failures.
 
+      PSEUDOCODE:
+      1) if this order was already charged, return its receipt
+      2) load the customer, and reject if they are blocked
++     3) reject if the order's fraud score exceeds FRAUD_THRESHOLD
+-     3) charge the customer and save the receipt, retrying on failure
++     4) charge the customer and save the receipt, retrying on failure
 
+      CONSTANTS:
+        - STRIPE_KEY: str
+        - MAX_RETRIES: int
++       - FRAUD_THRESHOLD: float
 
+      CALLS:
+        - load_customer(customer_id) -> Customer
++       - fraud_score(order: Order) -> float
+        - stripe_charge(key: str, customer: Customer, amount: Money) -> Receipt
+      """
+      ...
+```
 
+You agree on the design in seconds, then the LLM generates code that matches it exactly.
 
-Speck 
+## The speck workflow
 
+### 1) Plan Mode
 
+Plan your changes as normal.
 
+Don't delve too deep, just convey the general design intentions.
 
+### 2) Speck Generation
 
-**Human-LLM communication is broken: natural language is too ambiguous but code diffs are too noisy.**
+After the plan is approved, the speck workflow initiates:
 
+1. Generates `.speck` files for relevant files "before" the feature
+2. Creates a new git commit with this change (VCS-agnostic)
+3. Generates `.speck` files for relevant files "after" the feature
 
+Now `git diff` is the change specification: view this in your IDE using the `diff` view.
 
+### 3) Collaborate & Review
 
+Iterate with the LLM until you are happy with the design:
+- Manually edit the speck files
+- Add `# do this instead` directive comments (automatically picked up by the LLM)
+- Or ask the LLM to reshape the specification files for you
 
+This is your new, more precise 'Plan Mode': shape the diff into the structure you want and stay in control of the final implementation.
 
-Software development requires developers to plan across multiple layers of abstraction — but human-AI interfaces are not well designed for this:
-- It's hard to communicate technical ideas with unstructured text.
-- Reading walls of text is fatiguing.
-- Fixing design mistakes after code generation is costly and frustrating.
+### 4) Code Generation
 
-What we need is a **shared, structured specification language between humans and AI** which lets developers & LLMs visualise what the final program structure looks like before starting code implementation.
+Once you are happy, sign off on the speck implementation.
 
-Introducing **speck**, a specification workflow skill for AI-assisted development which inserts a design step between 'Plan Mode' and 'Code Generation'.
+The LLM can now fearlessly generate code which closely matches your intentions.
 
-**Embrace the fail-fast philisophy: front-load answering questions, making design decisions, and clearing up misconceptions before writing a single line of code.**
+### 5) Cleanup
 
-Now LLMs can efficiently one-shot your implementation with full confidence their design aligns with your expections.
-
-[IMAGE]
-
-## What is speck
-
-When developing a feature, the workflow generates a new `.speck` file for each relevant program file in the change (e.g., `main.speck.py`). The `speck` file keeps the original file's structure and behaviour (e.g., classes, function signatures, docstrings) but abstracts out unneeded implementation details.
-
-You can collaborate with the LLM across any level of abstraction — from system-level types and structures to low-level function behaviour. Once you are satisfied, the LLM will generate code which faithfully matches the specification you set out.
-
-You can visualise and guide the system's design without writing a single line of code! The workflow generates `speck` files 'before' and 'after' your proposed feature, to be viewed as a code diff in your IDE.
-
-Speck is unopinionated, leaves no trace, and fits into any existing AI workflow.
-
-Give it a go today to explore a better way to communicate with your LLM!
-
-Workflow: `Plan Mode → Speck Diff → Collaborate / Review → Code Gen → Cleanup`
-
-## How does it work
-
-1. **Plan.** Sketch out your feature with 'Plan Mode' as normal, and accept the plan.
-2. **Speck.** Before implementing the plan, the new 'speck' workflow kicks in.
-3. **Diff.** The workflow generates 'before' and 'after' speck files, leveraging git* to produce diffs.
-4. **Collaborate.** Review and refine the speck diff in your IDE alongside the LLM, until you sign off.
-5. **Code Generation.** The LLM generates code according to your specification.
-6. **Cleanup.** Once you have finished, the speck files are wiped leaving no trace of the workflow.
-
-*Or your VCS of choice.
+After you've verified the generated code, the speck files are deleted — leaving no trace in your project, config, or git history.
 
 ## Install
 
@@ -113,15 +162,15 @@ cp speck/SKILL.md ~/.claude/skills/speck/SKILL.md
 
 ### Install the hook
 
-This hook invokes the skill after every planning session: asking you whether you want to invoke the speck workflow.
+This hook invokes the skill after every planning session (asking if you want to invoke the speck workflow).
 
-Copy the `hooks` block from [`speck-hook.json`](speck-hook.json) into `~/.claude/settings.json` (or `.claude/settings.json` for a single project), then restart Claude Code.
+Copy `speck-hook.json` into `~/.claude/settings.json`, then restart Claude Code.
 
 ## For the best experience
 
 For the best experience:
-- Turn off linting on `*.speck` files, but keep the LSP configuration on.
-- Use your IDE's 'diff' view to compare 'before' and 'after' specks (`git diff` by default).
+- Turn off linting on `*.speck` files, but keep syntax-highting and LSP configuration on.
+- Use your IDE's `diff` view to compare 'before' and 'after' specks (`git diff` by default).
 - Use the [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) skill to refine your speck files.
 - Use the [superpowers](https://github.com/obra/superpowers) skill (or red-green-refactor TDD) for robust code generation.
 
