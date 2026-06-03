@@ -7,9 +7,13 @@ Software development requires developers to plan across multiple layers of abstr
 - Reading walls of text is fatiguing.
 - Fixing design mistakes after code generation is costly and frustrating.
 
-What we need is a **shared, structured specification language between humans and AI** which lets developers & LLMs visualise what the final program structure looks like before writing a single line of code.
+What we need is a **shared, structured specification language between humans and AI** which lets developers & LLMs visualise what the final program structure looks like before starting code implementation.
 
 Introducing **speck**, a specification workflow skill for AI-assisted development which inserts a design step between 'Plan Mode' and 'Code Generation'.
+
+**Embrace the fail-fast philisophy: front-load answering questions, making design decisions, and clearing up misconceptions before writing a single line of code.**
+
+Now LLMs can efficiently one-shot your implementation with full confidence their design aligns with your expections.
 
 [IMAGE]
 
