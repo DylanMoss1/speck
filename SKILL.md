@@ -62,6 +62,7 @@ These rules serve the purpose above: keeping the human and AI working from one p
 8. **If the source has diverged, stop.** If the working-directory source differs from the base commit in ways that are not reflected in the speck files (e.g. a hotfix, a teammate's commit, an unfinished edit), do not generate a speck diff that silently ignores this. Surface the divergence to the user and agree on how to handle it before proceeding. A speck diff is only trustworthy when the "before" speck genuinely matches the committed source it was derived from.
 9. **The user can abandon the workflow at any time.** This is distinct from rules 2 and 5, which forbid *you* from skipping on your own initiative. If the user explicitly says to stop using speck — "skip speck", "just write the code", "drop the speck workflow", or similar clear instruction — honour it immediately and proceed without speck. When the user wants out, do not insist on continuing.
 10. **Confirm ambiguous sign-offs.** A user message like "looks good" or "yes" may mean "I approve this one modification" or "I approve the whole speck and you may proceed." If it is unclear which they mean, and you believe they may be signing off the entire speck (i.e. authorising you to move to code), check before proceeding. Do not treat an ambiguous approval of a single change as sign-off on the whole speck.
+11. **Gate-check the diff — always, no exceptions.** Before showing the user the speck diff, and again before generating code from it, you MUST run `git diff --name-only` and confirm every path is a `.speck` file — every time, however small or obviously-clean the diff looks. If any non-`.speck` file appears, you have leaked source changes: stop, stage or revert it, and investigate before continuing. The diff must contain speck files and nothing else.
 
 ### Rationalizations that are never valid (once the user has opted in)
 
@@ -79,6 +80,11 @@ For omitting a signed-off change:
 - "This rename doesn't affect behavior"
 - "A code reviewer flagged this as unnecessary"
 - "I'll mention it to the user instead of implementing it"
+
+For skipping the gate check (rule 11):
+- "The diff is small / one file / obviously only speck files"
+- "I'll eyeball it instead of running the command"
+- "I just ran it a moment ago" (state may have changed — run it again)
 
 ## Generating Speck Files
 
@@ -122,12 +128,27 @@ If the project has a code formatter, run it on both the before and after speck f
 
 ## Creating a Speck Diff
 
-1. **Base Commit:** For each affected source file, create a corresponding `.speck` file representing the current ("before") state. Commit these files with the message `speck [before state]: <very short description of changes>`.
-2. **Working directory:** Modify the speck files (without committing) to represent the "after" state.
+### 1) VCS
+
+Before starting, check what VCS the user is using (check for `.git` files, `.jj` files, etc.). Choose the most appropriate option (for example, if both `.jj` and `.git` are present, choose `jj`). Adapt the commands accordingly, such as using separate "before" and "after" changes in `jj`.
+
+### 2) Base Commit
+
+For each affected source file, create a corresponding `.speck` file representing the current ("before") state — generated from the source as it exists on disk, including any uncommitted edits.
+
+Then make a **new commit that adds every file in the working tree** (the new `.speck` files *and* any pre-existing uncommitted changes), with the message `speck [before state]: <very short description of changes>`. Use `git add -A`. Committing the user's outstanding work into this Base Commit is intentional and correct: it moves everything to a clean baseline so the later `git diff` shows only your speck edits.
+
+The **only** exception: if any file you are about to add looks like it should not be committed (e.g. a `.env` file, secrets, credentials, large build artifacts), stop and ask the user before including it. Do not silently commit such files, and do not silently leave them out either — check first.
+
+### 3) Working directory
+
+Modify the speck files (without committing) to represent the "after" state.
 
 `git diff` now shows exactly what changes the feature requires at the specification level.
 
-Before starting, check what VCS the user is using (check for `.git` files, `.jj` files, etc.). Choose the most appropriate option (for example, if both `.jj` and `.git` are present, choose `jj`). Adapt the commands accordingly, such as using separate "before" and "after" changes in `jj`.
+### 4) Gate check
+
+**Gate check (mandatory — see rule 11):** run `git diff --name-only` and confirm every path is a `.speck` file before presenting the diff.
 
 ## Example (Python and git specific)
 

@@ -117,7 +117,7 @@ You agree on the design in seconds, then the LLM generates code that matches it 
 
 ### 1) Plan Mode
 
-Plan your changes as normal.
+Plan your changes as normal using 'Plan Mode'.
 
 Don't delve too deep, just convey the general design intentions.
 
@@ -129,7 +129,7 @@ After the plan is approved, the speck workflow initiates:
 2. Creates a new git commit with this change (VCS-agnostic)
 3. Generates `.speck` files for relevant files "after" the feature
 
-Now `git diff` is the change specification: view this in your IDE using the `diff` view.
+Now `git diff` represents the specification change: view this in your IDE using the `diff` view.
 
 ### 3) Collaborate & Review
 
@@ -164,15 +164,17 @@ cp speck/SKILL.md ~/.claude/skills/speck/SKILL.md
 
 This hook invokes the skill after every planning session (asking if you want to invoke the speck workflow).
 
-Copy `speck-hook.json` into `~/.claude/settings.json`, then restart Claude Code.
+Add `speck-hook.json` into `~/.claude/settings.json`, then restart Claude Code.
 
 ## For the best experience
 
 For the best experience:
-- Turn off linting on `*.speck` files, but keep syntax-highting and LSP configuration on.
+- Turn off linting on `*.speck*` files, but keep syntax-highting and LSP configuration on.
 - Use your IDE's `diff` view to compare 'before' and 'after' specks (`git diff` by default).
 - Use the [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) skill to refine your speck files.
 - Use the [superpowers](https://github.com/obra/superpowers) skill (or red-green-refactor TDD) for robust code generation.
+
+
 
 ## Philisophy
 
