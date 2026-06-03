@@ -1,6 +1,65 @@
 # Speck — Specification-driven Development
 
+**Speck is a specification workflow for AI-assisted programming, inserting a new design step between 'Plan Mode' and 'Code Generation'.**
+
+**Plan Mode** generates large blocks of text, which are hard to debug and reason about precisely.
+
+**Code Generation** is costly, we want to _fail fast_ rather than fix design flaws at this stage.
+
+Speck introduces a flexible, structured specification language between humans and AI — allowing you to visualise the final structure of the program before writing a single line of code.
+
+Benefits:
+- Faster, more precise communication with LLMs.
+- Fail fast: questions and design decision are front-loaded.
+- Hands-off implementation & greater confidence LLMs understand your design.
+- Visualise and guide the structure of the program — stay in control.
+
+[VIDEO]
+
+
+
+
+
+
+
+
+This improves human-LLM communication, 
+
+
+
+
+
+
+What does it solve:
+- **Avoid 
+
+
+Avoid planning features with large, natural-language blocks of text.
+- 
+
+
+
+
+
+For those who AI-programming because: 
+- 
+
+
+
+
+
+Speck 
+
+
+
+
+
 **Human-LLM communication is broken: natural language is too ambiguous but code diffs are too noisy.**
+
+
+
+
+
 
 Software development requires developers to plan across multiple layers of abstraction — but human-AI interfaces are not well designed for this:
 - It's hard to communicate technical ideas with unstructured text.
@@ -44,7 +103,7 @@ Workflow: `Plan Mode → Speck Diff → Collaborate / Review → Code Gen → Cl
 
 ## Install
 
-Speck is one markdown file. Drop it into your skills directory:
+### Install the skill
 
 ```sh
 git clone https://github.com/DylanMoss1/speck.git
@@ -52,7 +111,13 @@ mkdir -p ~/.claude/skills/speck
 cp speck/SKILL.md ~/.claude/skills/speck/SKILL.md
 ```
 
-The skill activates automatically when you finish planning a feature, asking if you want to use the workflow.
+### Install the hook
+
+This hook invokes the skill after every planning session: asking you whether you want to invoke the speck workflow.
+
+Copy the `hooks` block from [`speck-hook.json`](speck-hook.json) into `~/.claude/settings.json` (or `.claude/settings.json` for a single project), then restart Claude Code.
+
+## For the best experience
 
 For the best experience:
 - Turn off linting on `*.speck` files, but keep the LSP configuration on.
@@ -60,7 +125,7 @@ For the best experience:
 - Use the [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) skill to refine your speck files.
 - Use the [superpowers](https://github.com/obra/superpowers) skill (or red-green-refactor TDD) for robust code generation.
 
-## Good to know
+## Philisophy
 
 - **Any language.** The specification format is generic enough to work across any program file.
 - **Unopinionated.** Speck only handles the spec-and-diff workflow. Pair it with whatever planning, questioning, or review tools you already use.

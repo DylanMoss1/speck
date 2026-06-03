@@ -1,6 +1,6 @@
 ---
 name: speck
-description: A specification workflow for AI-assisted development that inserts a design step between planning and code generation. Use this skill whenever a plan has been approved and implementation is about to begin — when the user says "implement this", "go ahead", "build it", "looks good, proceed", or similar after a planning discussion. Also use it when the user references a previously-discussed plan or feature, even if context has been cleared. When the skill first engages for a piece of work, confirm with the user that they want to use speck (defaulting to yes); once confirmed, the workflow applies to all code changes in that work, including small ones.
+description: A specification workflow for AI-assisted development that inserts a design step between planning and code generation.
 ---
 
 # Speck
