@@ -1,4 +1,4 @@
-# payments.speck.py — before feature
+# payments.speck.py — after feature
 
 STRIPE_KEY: str
 MAX_RETRIES: int

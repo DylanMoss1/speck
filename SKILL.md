@@ -41,7 +41,7 @@ The diff is expected to contain only `.speck` files (the gate-check in rule 9 en
 
 1. **Get planned feature** — plan mode ends and the plan is approved (step 1).
 2. **Get the VCS** — detect git/jj/etc. and adapt the commands accordingly (step 2).
-3. **Check the git state** — ensure no outstanding changes; commit any to a temporary commit (step 3).
+3. **Check the git state** — commit any outstanding changes to a temporary commit, kept separate from the speck baseline (step 3).
 4. **Generate 'before' speck files** — capture the current state of relevant files, then format (steps 4–4.1).
 5. **Commit the changes** — commit the 'before' speck files as the Base Commit (step 5).
 6. **Generate 'after' speck files** — edit the specks to the target state, then format. The `git diff` is the feature (steps 6–6.1).
@@ -111,7 +111,7 @@ If there is more than one, pick the most appropriate one as their main VCS (for 
 
 Check that there are no unstaged or outstanding changes in the git repository.
 
-If there are, then commit these files under a temporary commit. If there are files you think you should not commit (e.g. large files, `.env`) then check these with the user first.
+If there are, then commit these files under a temporary commit (kept separate from the speck Base Commit, and undone at cleanup in step 11). If there are files you think you should not commit (e.g. large files, `.env`) then check these with the user first.
 
 Confirm with:
 
@@ -136,6 +136,8 @@ If the 'before' state does not contain a speck file but the 'after' state does, 
 Speck files live next to their corresponding original files in the file structure.
 
 `repo/my_program.py` gets the additional speck file `repo/my_program.speck.py`.
+
+This workflow is language-agnostic. A speck file mirrors its source with the same extension (`main.speck.py`, `lib.speck.ts`, `mod.speck.rs`, and so on) and the same transformation: keep structure and signatures, drop implementation. The examples in this document use Python, but the workflow applies unchanged to any language.
 
 To generate a speck file from a source file, copy the source but remove all concrete implementation. Preserve:
 - Class and function definitions (signatures only)
@@ -192,7 +194,7 @@ Once all 'before' state speck files have been created, check if the codebase use
 
 ### 5. Commit the changes
 
-Commit all speck files with the message `speck [before state]: <very short description of changes>`.
+Commit only the speck files as the Base Commit, with the message `speck [before state]: <very short description of changes>`. Stage the `.speck` files explicitly (do not use `git add -A`) so the Base Commit contains speck files and nothing else — the user's own outstanding work stays in the separate temporary commit from step 3.
 
 ### 6. Generating 'after' speck files
 
@@ -309,4 +311,4 @@ Once the user has given their final verification then cleanup the files and git 
 Cleanup:
 - Delete all `.speck` files.
 - Clean up the git history to remove intermediary speck git commits.
-- If any unstaged or outstanding changes were committed to a temporary commit under step 3, make sure to undo these changes.
+- If any unstaged or outstanding changes were committed to a temporary commit under step 3, make sure to undo these changes (restoring the user's original outstanding work to the working tree).

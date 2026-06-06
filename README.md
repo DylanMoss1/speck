@@ -172,21 +172,21 @@ cp speck/SKILL.md ~/.claude/skills/speck/SKILL.md
 
 Invoke the skill after every planning session (with an option to skip the workflow).
 
-Add `speck-hook.json` into `~/.claude/settings.json`, then restart Claude Code.
+Merge the contents of `speck-hook.json` into `~/.claude/settings.json`, then restart Claude Code.
 
 ## For the best experience
 
 For the best experience:
-- Turn off linting on `*.speck*` files, but keep syntax-highting and LSP configuration on.
+- Turn off linting on `*.speck*` files, but keep syntax-highlighting and LSP configuration on.
 - Use your IDE's `diff` view to compare 'before' and 'after' specks (`git diff` by default).
 - Use the [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) skill to refine your speck files.
 - Use the [superpowers](https://github.com/obra/superpowers) skill (or red-green-refactor TDD) for robust code generation.
 
-## Philisophy
+## Philosophy
 
 - **Any language.** The specification format is generic enough to work across any program file.
 - **Unopinionated.** Speck only handles the spec-and-diff workflow. Pair it with whatever planning, questioning, or review tools you already use.
-- **Leaves no trace.** Speck files are temporary. They aren't committed long-term and don't touch your project config — your teammates and CI never need to know they exists.
+- **Leaves no trace.** Speck files are temporary. They aren't committed long-term and don't touch your project config — your teammates and CI never need to know they exist.
 - **Stay in control.** Visualise and guide the end implementation, don't leave it up to chance!
 
 ## License
