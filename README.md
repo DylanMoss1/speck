@@ -133,7 +133,7 @@ Now `git diff` represents the specification change: view this in your IDE using 
 
 ### 3) Collaborate & Review
 
-Iterate with the LLM until you are happy with the design:
+Iterate with the LLM, either:
 - Manually edit the speck files
 - Add `# do this instead` directive comments (automatically picked up by the LLM)
 - Or ask the LLM to reshape the specification files for you
@@ -152,6 +152,8 @@ After you've verified the generated code, the speck files are deleted — leavin
 
 ## Install
 
+Installation instructions for Claude Code (but speck is compatible with any AI workflow).
+
 ### Install the skill
 
 ```sh
@@ -162,7 +164,7 @@ cp speck/SKILL.md ~/.claude/skills/speck/SKILL.md
 
 ### Install the hook
 
-This hook invokes the skill after every planning session (asking if you want to invoke the speck workflow).
+Invoke the skill after every planning session (with an option to skip the workflow).
 
 Add `speck-hook.json` into `~/.claude/settings.json`, then restart Claude Code.
 
@@ -173,8 +175,6 @@ For the best experience:
 - Use your IDE's `diff` view to compare 'before' and 'after' specks (`git diff` by default).
 - Use the [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) skill to refine your speck files.
 - Use the [superpowers](https://github.com/obra/superpowers) skill (or red-green-refactor TDD) for robust code generation.
-
-
 
 ## Philisophy
 
