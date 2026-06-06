@@ -121,6 +121,8 @@ Plan your changes as normal using 'Plan Mode'.
 
 Don't delve too deep, just convey the general design intentions.
 
+![Claude Code Plan Mode](assets/plan-mode.png)
+
 ### 2) Speck Generation
 
 After the plan is approved, the speck workflow initiates:
@@ -131,6 +133,8 @@ After the plan is approved, the speck workflow initiates:
 
 Now `git diff` represents the specification change: view this in your IDE using the `diff` view.
 
+![Speck Diff](assets/speck-diff.png)
+
 ### 3) Collaborate & Review
 
 Iterate with the LLM, either:
@@ -139,6 +143,8 @@ Iterate with the LLM, either:
 - Or ask the LLM to reshape the specification files for you
 
 This is your new, more precise 'Plan Mode': shape the diff into the structure you want and stay in control of the final implementation.
+
+![Speck Diff With Comments](assets/speck-diff-with-comments.png)
 
 ### 4) Code Generation
 
