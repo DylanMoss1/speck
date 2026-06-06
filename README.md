@@ -14,7 +14,7 @@ Benefits:
 - Hands-off implementation, with confidence that LLMs understand your design.
 - Visualise and guide the final structure of the program.
 
-**Won't this be irrelevant once AI gets smarter?** No, speck solves an orthogonal problem: human-LLM communication. A models undestanding of the problem and its requirements will only matter more as it takes on longer and more demanding tasks. This tool's effectiveness scales with the underlying model, and is designed to integrate into any AI workflow.
+**Won't this be irrelevant once AI gets smarter?** No, speck solves an orthogonal problem: human-LLM communication. A model's undestanding of the problem and its requirements will only matter more as it takes on longer and more demanding tasks. This tool's effectiveness scales with the underlying model, and is designed to integrate into any AI workflow.
 
 ## Speck files
 
