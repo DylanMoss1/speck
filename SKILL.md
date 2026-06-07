@@ -93,6 +93,8 @@ Workflow rules:
 
 Follow these steps in a strict order. NEVER skip steps. See Rules for a list of rationalizations that do NOT justify skipping.
 
+Use these step numbers internally to keep track of where you are in the workflow and to avoid skipping steps. But avoid referring to these step numbers when communicating with the user as they are not aware of the skill's internals.
+
 ### 1. Get planned feature
 
 If the user has already planned a feature, immediately continue to step 2.
@@ -234,6 +236,8 @@ Take care that empty / incomplete implementation markers should not move between
 
 ### 7. Iterating on the design
 
+Now stop and check the speck with the user. Do not continue until the user has given approval.
+
 **IMPORTANT:** Before every conversation, check if any of the speck files have been modified by the user.
 
 Incorporate user directives (e.g. `# Change this to X`, `# Instead do Y`) as implementation instructions into the speck file definition, updating comments and docstrings if necessary.
@@ -257,20 +261,20 @@ git stash pop
 
 ### 7.1. Consistency check
 
-Before generating code, review all speck files for errors, inconsistencies, or contradictions between files. Fix any issues found before proceeding.
+Before moving onto the next step, first stop and review speck files for errors, inconsistencies, and contradictions. Work with the user to fix any issues found before proceeding.
 
 ### 8. Tests
 
-Check with the user to see if they want to speck tests.
+Check with the user to see if they want to create speck files for program tests before implementation.
 
-If they say yes: repeat steps 4 -> 7 for all test files related to the feature change.
+If they say yes: repeat steps 4 -> 7.1 for all test files related to the feature change.
 
-If they say no: still implement tests, but do not create speck test files.
+If they say no: proceed straight to the next step. But still implement the tests and create speck files for the tests after they have been generated.
 
 ### 9. Sign-off and implementation
 
 Sign-off steps:
-1) To proceed, the user must explicitly say "I sign off on the speck changes, proceed with implementation"
+1) To proceed, the user must explicitly say "I sign off on the speck changes"
 2) Before generating code, review all speck files for errors, inconsistencies, or contradictions between files. Fix any issues found before proceeding.
 
 **IMPORTANT:** Never generate any non-`.speck` files until explicit implementation signoff has been given. If it is ever ambiguous whether signoff has been given, check with the user first.
