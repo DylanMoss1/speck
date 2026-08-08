@@ -190,6 +190,8 @@ def add_row_to_db(row: Row) -> None:
     ...
 ```
 
+Do not touch existing comments if nothing has changed, as this clutters the speck diff.
+
 ### 4.1. Formatting
 
 Once all 'before' state speck files have been created, check if the codebase uses a formatter. If it does, run this formatter on the speck files (ignore any speck-specific errors).
@@ -236,7 +238,9 @@ Take care that empty / incomplete implementation markers should not move between
 
 ### 7. Iterating on the design
 
-Now stop and check the speck with the user. Do not continue until the user has given approval.
+Now stop and check the speck with the user. Give them some room to read through the speck files and understand the changes. Then converse with the user about the changes made.
+
+Do not continue until the user has given approval.
 
 **IMPORTANT:** Before every conversation, check if any of the speck files have been modified by the user.
 

@@ -6,7 +6,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"STOP. A plan was just approved and plan mode has ended. This is the mandatory speck checkpoint and it must not be skipped under any circumstances. Before you write, edit, or create a single line of code \\u2014 and before any other tool call \\u2014 you MUST engage the speck skill right now: ask the user whether to use the speck workflow for this piece of work (default yes), then follow the speck skill instructions exactly. There is no exception: not for trivial changes, not for one-line edits, not because the plan was detailed, not because the user said implement. The ONLY way past this checkpoint without speck is the user explicitly declining it when you ask. Engaging speck is not optional and asking the question is not optional. Do this now, before anything else.\"}}'"
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"STOP. A plan was just approved and plan mode has ended. This is the mandatory speck checkpoint and it must not be skipped under any circumstances. Before you write, edit, or create a single line of code \\u2014 and before any other tool call \\u2014 you MUST engage the speck skill right now: ask the user whether to use the speck workflow for this piece of work (default yes), then follow the speck skill instructions exactly. Do not assume that speck should / should not be used, always check with the user. There is no exception: not for trivial changes, not for one-line edits, not because the plan was detailed, not because the user said implement. The ONLY way past this checkpoint without speck is the user explicitly declining it when you ask. Engaging speck is not optional and asking the question is not optional. Do this now, before anything else.\"}}'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"STOP. A new session has started. This is the mandatory speck checkpoint and it must not be skipped under any circumstances. Check whether there are any files of the form '*.speck*' in the codebase: if there are then follow all of the instructions in the prompt, else ignore this prompt and continue as normal. Before you write, edit, or create a single line of code \\u2014 and before any other tool call \\u2014 you MUST engage the speck skill right now: ask the user whether to use the speck workflow for this piece of work (default yes), then follow the speck skill instructions exactly. Do not assume that speck should / should not be used, always check with the user. There is no exception: not for trivial changes, not for one-line edits, not because the plan was detailed, not because the user said implement. The ONLY way past this checkpoint without speck is the user explicitly declining it when you ask. Engaging speck is not optional and asking the question is not optional. Do this now, before anything else.\"}}'"
           }
         ]
       }
